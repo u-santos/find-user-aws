@@ -11,7 +11,6 @@ for line in myfile:
         iam = session.client('iam')
         paginator = iam.get_paginator('list_access_keys')
 
-        print("============================================================")
         print("\nSearching for KEY on SSO: {} account...".format(env))
         for user in iam.list_users()['Users']:
             for response in paginator.paginate(UserName=user['UserName']):
