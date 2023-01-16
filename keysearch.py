@@ -26,7 +26,7 @@ def createNewUser(user_name, iam, managed_user_policies, iam_resource):
 def searchKey(KEY):
     search = False
     myfile = open("/home/ulisses/.aws/credentials", "r")
-    
+
     for line in myfile:
         if line[0] == "[" and line[len(line) - 2]  == "]":
             env = line[1:(len(line) - 2)]
@@ -36,7 +36,7 @@ def searchKey(KEY):
             iam_resource = session.resource('iam')
             paginator = iam.get_paginator('list_access_keys')
 
-            print("\nSearching for KEY on SSO: {} account...".format(env))
+            print("\nSearching for KEY on {} account...".format(env))
             for user in iam.list_users()['Users']:
                 user_name = user['UserName']
                 for response in paginator.paginate(UserName=user_name):
@@ -55,7 +55,7 @@ def searchKey(KEY):
     myfile.close()
 
     if not search:
-        print("User not found!")
+        print("\nUSER NOT FOUND")
 
 if __name__ == "__main__":
     searchKey(sys.argv[1])
