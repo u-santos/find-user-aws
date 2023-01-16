@@ -28,20 +28,24 @@ for line in myfile:
                         print("\nKey found!\n \n{} in {} user. \nSSO: {}".format(KEY, user_name, env))
 
                         try:
-                            new_user_name = "TEST-{}".format(user_name)
+                            new_user_name = "new-{}".format(user_name)
                             iam.create_user(UserName=new_user_name)
                             for policies in managed_user_policies['AttachedPolicies']:
                                 iam.attach_user_policy(UserName=new_user_name, PolicyArn=policies['PolicyArn'])
                             new_user_key = iam_resource.User(new_user_name)
                             access_key_pair = new_user_key.create_access_key_pair()
-                            print('\nNEW KEY GENERATED - PLEASE RECORD THE NEW KEYS')
-                            print('THEY WILL NOT BE DISPLAYED AGAIN')
+                            
+                            print("")
+                            print("=" * 50)
+                            print("USER CREATED")
+                            print("NEW KEY GENERATED - PLEASE RECORD THE NEW KEYS")
+                            print("THEY WILL NOT BE DISPLAYED AGAIN")
+                            print("=" * 50)
                             print('\nid:', access_key_pair.access_key_id)
                             print('secret:', access_key_pair.secret)
                             print('status:', access_key_pair.status)
-                            print("\nUser Created!")
                         except Exception as e:
-                            print("Failed: Error to create new user, please contact your administrator.")
+                            print("Failed: Error to create new user.")
                             print(e)
     if search:
         break
