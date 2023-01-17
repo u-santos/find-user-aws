@@ -55,7 +55,7 @@ def searchKey(access_key):
     myfile.close()
 
     if not search:
-        print('\nUSER NOT FOUN')
+        print('\nUSER NOT FOUND!')
 
 if __name__ == "__main__":
     searchKey(sys.argv[1])

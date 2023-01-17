@@ -12,3 +12,5 @@ O script irá buscar o usuário com a Access Key e criar um novo com o prefixo n
 Ex:
 
 python3 keysearch.py AKIJ8Q5IAJUN1ZPAH79Q
+
+Script desenvolvido por Ulisses Oliveira
