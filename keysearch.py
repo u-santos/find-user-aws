@@ -23,7 +23,7 @@ def createNewUser(user_name, iam, managed_user_policies, iam_resource):
         print("Failed: Error to create new user.")
         print(e)
 
-def searchKey(access_key):
+def searchKey(access_key, option):
     search = False
     myfile = open('/home/ulisses/.aws/credentials', 'r')
 
@@ -49,7 +49,8 @@ def searchKey(access_key):
                             
                             print('\nKey found!\n \n{} in {} user. \nSSO: {}'.format(access_key, user_name, env))
 
-                            createNewUser(user_name, iam, managed_user_policies, iam_resource)
+                            if option == "True":
+                                createNewUser(user_name, iam, managed_user_policies, iam_resource)
         if search:
             break
     myfile.close()
@@ -58,4 +59,4 @@ def searchKey(access_key):
         print('\nUSER NOT FOUND!')
 
 if __name__ == "__main__":
-    searchKey(sys.argv[1])
+    searchKey(sys.argv[1], sys.argv[2])
