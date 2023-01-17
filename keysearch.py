@@ -42,17 +42,16 @@ def searchKey(access_key, option):
                 for response in paginator.paginate(UserName=user_name):
                     if len(response['AccessKeyMetadata']) > 0:
                         access_key_metadata = response['AccessKeyMetadata'][0]
-                        if access_key == access_key_metadata['AccessKeyId']:
+                        if access_key == access_key_metadata['AccessKeyId'] or access_key in access_key_metadata['AccessKeyId']:
                             search = True
                             inline_user_policies = iam.list_user_policies(UserName=user_name)
                             managed_user_policies = iam.list_attached_user_policies(UserName=user_name)
                             
-                            print('\nKey found!\n \n{} in {} user. \nSSO: {}'.format(access_key, user_name, env))
+                            print('\nKey found!\n \n{} in {} user. \nSSO: {}'.format(access_key_metadata['AccessKeyId'], user_name, env))
 
                             if option == "True":
                                 createNewUser(user_name, iam, managed_user_policies, iam_resource)
-        if search:
-            break
+
     myfile.close()
 
     if not search:
