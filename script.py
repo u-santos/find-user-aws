@@ -3,7 +3,7 @@ import sys
 
 def createNewUser(user_name, iam, managed_user_policies, list_of_groups_names, iam_resource):
     try:
-        new_user_name = "TESTE-{}".format(user_name)
+        new_user_name = "new-{}".format(user_name)
         iam.create_user(UserName=new_user_name)
         
         for policies in managed_user_policies['AttachedPolicies']:
