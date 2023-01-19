@@ -1,7 +1,8 @@
 import boto3
+import json
 import sys
 
-def createNewUser(user_name, iam, managed_user_policies, list_of_groups_names, iam_resource):
+def createNewUser(user_name, iam, managed_user_policies, list_of_groups_names, inline_user_policies, iam_resource):
     try:
         new_user_name = "new-{}".format(user_name)
         iam.create_user(UserName=new_user_name)
@@ -10,8 +11,13 @@ def createNewUser(user_name, iam, managed_user_policies, list_of_groups_names, i
             iam.attach_user_policy(UserName=new_user_name, PolicyArn=policies['PolicyArn'])
         
         for group_name in list_of_groups_names:
-            iam.add_user_to_group(GroupName=group_name, UserName=new_user_name)
+           iam.add_user_to_group(GroupName=group_name, UserName=new_user_name)
         
+        for policy_name in inline_user_policies["PolicyNames"]:
+            response_policy = iam.get_user_policy(UserName=user_name, PolicyName=policy_name)
+            policy_document = json.dumps(response_policy["PolicyDocument"])
+            response_put = iam.put_user_policy(UserName=new_user_name, PolicyName=policy_name, PolicyDocument=policy_document)
+
         new_user_key = iam_resource.User(new_user_name)
         access_key_pair = new_user_key.create_access_key_pair()
         
@@ -50,7 +56,7 @@ def searchUser(env, iam, paginator, access_key, list_args, iam_resource):
 
                     if len(list_args) == 3:
                         if list_args[1] == "create":
-                            createNewUser(user_name, iam, managed_user_policies, list_of_groups_names, iam_resource)
+                            createNewUser(user_name, iam, managed_user_policies, list_of_groups_names, inline_user_policies, iam_resource)
 
 def setupSession(list_args):
     if len(list_args) == 1:
